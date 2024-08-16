@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transkripcija između ćirilice i latinice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            margin-bottom: 20px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <h1><b>Transkripcija između ćirilice i latinice - For your eyes only</b></h1>
+
+    <textarea id="textInput" placeholder="Ovdje zalijepite tekst..."></textarea>
+
+    <!-- Gumb za transkripciju s ćirilice na latinicu -->
+    <button onclick="transcribeToLatin()"><b>Ćirilica na latinicu</b></button>
+
+    <!-- Gumb za transkripciju s latinice na ćirilicu -->
+    <button onclick="transcribeToCyrillic()"><b>Latinica na ćirilicu</b></button>
+
+    <textarea id="textOutput" placeholder="Transkribovani tekst će se pojaviti ovdje..."></textarea>
+
+    <script>
+        function transcribeToLatin() {
+            const cyrillicToLatinMap = {
+                'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'ђ': 'đ', 'е': 'e', 'ж': 'ž', 'з': 'z',
+                'и': 'i', 'ј': 'j', 'к': 'k', 'л': 'l', 'љ': 'lj', 'м': 'm', 'н': 'n', 'њ': 'nj', 'о': 'o',
+                'п': 'p', 'р': 'r', 'с': 's', 'т': 't', 'ћ': 'ć', 'у': 'u', 'ф': 'f', 'х': 'h', 'ц': 'c',
+                'ч': 'č', 'џ': 'dž', 'ш': 'š',
+                'А': 'A', 'Б': 'B', 'В': 'V', 'Г': 'G', 'Д': 'D', 'Ђ': 'Đ', 'Е': 'E', 'Ж': 'Ž', 'З': 'Z',
+                'И': 'I', 'Ј': 'J', 'К': 'K', 'Л': 'L', 'Љ': 'Lj', 'М': 'M', 'Н': 'N', 'Њ': 'Nj', 'О': 'O',
+                'П': 'P', 'Р': 'R', 'С': 'S', 'Т': 'T', 'Ћ': 'Ć', 'У': 'U', 'Ф': 'F', 'Х': 'H', 'Ц': 'C',
+                'Ч': 'Č', 'Џ': 'Dž', 'Ш': 'Š'
+            };
+
+            let text = document.getElementById('textInput').value;
+            let transcribedText = '';
+
+            for (let char of text) {
+                transcribedText += cyrillicToLatinMap[char] || char;
+            }
+
+            document.getElementById('textOutput').value = transcribedText;
+        }
+
+        function transcribeToCyrillic() {
+            const latinToCyrillicMap = {
+                'a': 'а', 'b': 'б', 'v': 'в', 'g': 'г', 'd': 'д', 'đ': 'ђ', 'e': 'е', 'ž': 'ж', 'z': 'з',
+                'i': 'и', 'j': 'ј', 'k': 'к', 'l': 'л', 'lj': 'љ', 'm': 'м', 'n': 'н', 'nj': 'њ', 'o': 'о',
+                'p': 'п', 'r': 'р', 's': 'с', 't': 'т', 'ć': 'ћ', 'u': 'у', 'f': 'ф', 'h': 'х', 'c': 'ц',
+                'č': 'ч', 'dž': 'џ', 'š': 'ш',
+                'A': 'А', 'B': 'Б', 'V': 'В', 'G': 'Г', 'D': 'Д', 'Đ': 'Ђ', 'E': 'Е', 'Ž': 'Ж', 'Z': 'З',
+                'I': 'И', 'J': 'Ј', 'K': 'К', 'L': 'Л', 'Lj': 'Љ', 'M': 'М', 'N': 'Н', 'Nj': 'Њ', 'O': 'О',
+                'P': 'П', 'R': 'Р', 'S': 'С', 'T': 'Т', 'Ć': 'Ћ', 'U': 'У', 'F': 'Ф', 'H': 'Х', 'C': 'Ц',
+                'Č': 'Ч', 'Dž': 'Џ', 'Š': 'Ш'
+            };
+
+            let text = document.getElementById('textInput').value;
+            let transcribedText = '';
+
+            // Zamjena specijalnih sekvenci (lj, nj, dž) prije pojedinačnih znakova
+            const specialSequences = ['lj', 'nj', 'dž', 'Lj', 'Nj', 'Dž'];
+            for (let sequence of specialSequences) {
+                const regex = new RegExp(sequence, 'g');
+                text = text.replace(regex, latinToCyrillicMap[sequence]);
+            }
+
+            // Zamjena ostalih znakova
+            for (let char of text) {
+                transcribedText += latinToCyrillicMap[char] || char;
+            }
+
+            document.getElementById('textOutput').value = transcribedText;
+        }
+    </script>
+
+</body>
+</html>
